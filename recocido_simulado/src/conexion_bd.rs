@@ -1,4 +1,7 @@
-extern crate mysql;
+extern crate rusqlite;
+use std::path::Path;
+use self::rusqlite::Connection;
+use std::collections::HashMap;
 
 use mysql as ms;
 
@@ -18,7 +21,7 @@ struct conexion{
 }
 
 fn getCiudades() -> Vec<Ciudad>{
-    let pool = ms::Pool::new("mysql://root:password@localhost:3307").unwrap();
+    let connection = sqlite::open()
 }
 
 //read this for reference http://blackbeam.org/doc/mysql/index.html

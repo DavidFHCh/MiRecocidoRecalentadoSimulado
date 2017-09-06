@@ -4,4 +4,7 @@ version = "0.1.0"
 authors = ["DavidFHCh <davfep_96@ciencias.unam.mx>"]
 
 [dependencies]
-mysql = "12.0.2"
+sqlite = "0.23.9"
+rand = "0.3.16"
+config = "0.6"
+time = "0.1.38"
