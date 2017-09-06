@@ -1,0 +1,7 @@
+[package]
+name = "recocido_simulado"
+version = "0.1.0"
+authors = ["DavidFHCh <davfep_96@ciencias.unam.mx>"]
+
+[dependencies]
+mysql = "12.0.2"

@@ -1,0 +1,1 @@
+/home/david/Documents/septimo/HOC/MiRecocidoRecalentadoSimulado/recocido_simulado/target/debug/RecocidoSimulado: /home/david/Documents/septimo/HOC/MiRecocidoRecalentadoSimulado/recocido_simulado/src/main.rs
