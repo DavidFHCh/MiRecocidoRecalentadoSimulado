@@ -1,6 +1,6 @@
 #[derive(Clone)]
 pub struct Conexion{
-    ciudad1: i64,
-    ciudad2: i64,
-    distancia: f64,
+    pub ciudad1: i64,
+    pub ciudad2: i64,
+    pub distancia: f64,
 }

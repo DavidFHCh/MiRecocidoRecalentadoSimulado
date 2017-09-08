@@ -1,9 +1,10 @@
 #[derive(Clone)]
 pub struct Ciudad {
-    ciudad_id: i64,
-    ciudad_nom:String,
-    pais:String,
-    poblacion:i64,
-    latitud:f64,
-    longitud:f64,
+    pub ciudad_id: i64,
+    pub ciudad_nom: String,
+    pub pais: String,
+    pub poblacion: i64,
+    pub latitud: f64,
+    pub longitud: f64,
+    pub vecinos: 
 }

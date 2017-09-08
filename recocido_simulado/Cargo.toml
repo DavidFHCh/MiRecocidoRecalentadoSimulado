@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["DavidFHCh <davfep_96@ciencias.unam.mx>"]
 
 [dependencies]
-sqlite = "0.23.9"
+rusqlite = "0.12.0"
 rand = "0.3.16"
 config = "0.6"
 time = "0.1.38"
