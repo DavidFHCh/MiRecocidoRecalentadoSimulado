@@ -19,7 +19,7 @@ const NUM_CIUDADES: usize = 1098;
 /// }
 /// ```
 pub fn get_ciudades() -> Result<Vec<Ciudad>, rusqlite::Error> {
-    let path_db = Path::new("/home/david/Documents/HOC/Proyecto1/MiRecocidoRecalentadoSimulado/resources/world.db");
+    let path_db = Path::new("../resources/world.db");
     let conexion = Connection::open(path_db).unwrap();
     let mut ciudades = Vec::with_capacity(NUM_CIUDADES);
 
