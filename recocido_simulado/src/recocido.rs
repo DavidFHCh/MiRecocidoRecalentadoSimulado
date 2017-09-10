@@ -6,7 +6,6 @@ use self::ciudad::Ciudad;
 use self::solucion::Solucion;
 use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
-use conexion_bd::get_ciudades;
 use std::f64;
 
 static TAMLOTE: usize = 500;
@@ -32,13 +31,15 @@ impl<'a> RecocidoSimulado<'a> {
         let mut rng: XorShiftRng = SeedableRng::from_seed(seed);
         rng.shuffle(&mut s_init);
         let mut s = Solucion::new(s_init);
-        RecocidoSimulado {
+        let mut rs = RecocidoSimulado {
             temp: 0.0,
             solucion_act: s.clone(),
             solucion_min: s,
             rng: rng,
             sols: Soluciones::new(),
-        }
+        };
+        rs.temp_inicial();
+        rs
     }
 
     fn calcula_lote(&mut self) -> f64{
@@ -116,7 +117,7 @@ impl<'a> RecocidoSimulado<'a> {
 
         let len: usize = self.solucion_act.ciudades_solucion.len();
 
-        for i in 1..N {
+        for _i in 1..N {
             let mut a = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             let mut b = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             let mut s_prim = s.clone();
