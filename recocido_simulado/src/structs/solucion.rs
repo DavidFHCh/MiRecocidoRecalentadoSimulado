@@ -40,6 +40,11 @@ impl<'a> Solucion<'a> {
         let bb_len = self.f_a_eq_len(b,&len);
         let ab_0 = self.f_a_eq_0(a);
         let bb_0 = self.f_a_eq_0(b);
+
+        
+        if *a == *b {
+            return
+        }
         if ab_len {
             if !bb_0 {
                 self.f_a_en_medio(b);
@@ -48,7 +53,11 @@ impl<'a> Solucion<'a> {
             if !ab_0 {
                 self.f_a_en_medio(a);
             }
-        } else {
+        } else if ab_0{
+            self.f_a_en_medio(b);
+        } else if bb_0 {
+            self.f_a_en_medio(a);
+        } else{
             self.f_a_en_medio(a);
             self.f_a_en_medio(b);
         }
@@ -70,6 +79,12 @@ impl<'a> Solucion<'a> {
             } else {
                 self.f_a_en_medio_des(a);
             }
+        } else if ab_0 {
+            self.f_a_eq_0_des(a);
+            self.f_a_en_medio_des(b);
+        } else if bb_0 {
+            self.f_a_eq_0_des(b);
+            self.f_a_en_medio_des(a);
         } else {
             self.f_a_en_medio_des(a);
             self.f_a_en_medio_des(b);

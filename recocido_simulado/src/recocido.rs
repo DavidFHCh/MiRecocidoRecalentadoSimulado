@@ -9,11 +9,11 @@ use self::soluciones::Soluciones;
 use std::f64;
 
 static TAMLOTE: usize = 500;
-static EPSILON: f64 = 0.01;
+static EPSILON: f64 = 0.001;
 static EPSILON_P: f64 = 0.01;
 static EPSILON_T: f64 = 0.01;
-static PHI: f64 = 0.85;
-static P: f64 = 0.85;
+static PHI: f64 = 0.9;
+static P: f64 = 0.95;
 static N: usize = 500;
 
 
@@ -32,7 +32,7 @@ impl<'a> RecocidoSimulado<'a> {
         rng.shuffle(&mut s_init);
         let mut s = Solucion::new(s_init);
         let mut rs = RecocidoSimulado {
-            temp: 0.0,
+            temp: 1.0,
             solucion_act: s.clone(),
             solucion_min: s,
             rng: rng,
