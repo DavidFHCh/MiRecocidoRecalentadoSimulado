@@ -2,6 +2,7 @@ use structs::ciudad::Ciudad;
 
 static NO_EXISTENTE: f64 = 24822373537468.38;//usando el cuadrado de la distancia mas grande de la tabla connections. MAGIC NUMBER.
 
+#[derive(Clone)]
 pub struct Solucion<'a>{
     pub ciudades_solucion: Vec<&'a Ciudad>,
     pub f_obj:f64,
@@ -14,6 +15,7 @@ pub struct Solucion<'a>{
 
 
 impl<'a> Solucion<'a> {
+
     pub fn new(v: Vec<&'a Ciudad>) -> Self {
         let mut sol = Solucion {
                 ciudades_solucion: v,
@@ -52,7 +54,7 @@ impl<'a> Solucion<'a> {
         }
 
         self.swap(a,b);
-        self.actualizar_maximo(&len);
+        self.actualizar_maximo_factibilidad(&len);
 
         if ab_len {
             self.f_a_eq_len_des(a);
@@ -76,7 +78,7 @@ impl<'a> Solucion<'a> {
         self.f_obj = self.sum_peso/self.promedio;
     }
 
-    fn actualizar_maximo(&mut self,len: &usize) {
+    fn actualizar_maximo_factibilidad(&mut self,len: &usize) {//tambien checa factibilodad de la solucion.
         let mut max: f64 = 0.0;
 
         for i in 0..((*len)-1) {
@@ -89,10 +91,12 @@ impl<'a> Solucion<'a> {
                 }
             }else{
                 self.max_dis_castigo = NO_EXISTENTE;
+                self.factible = false;
                 return
             }
         }
         self.max_dis_castigo = max;
+        self.factible = true;
     }
 
     fn  f_a_eq_len_des(&mut self,a: &usize) {
