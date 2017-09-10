@@ -1,8 +1,18 @@
+use structs::solucion_lite::SolucionLite;
+
 pub struct Soluciones {
-    pub soluciones : Vec<Sol_anterior>,
+    pub soluciones : Vec<SolucionLite>,
 }
 
-pub struct Sol_anterior {
-    pub f_obj: f64,
-    factible: bool, 
+impl Soluciones {
+
+    pub fn new() -> Self {
+        Soluciones {
+            soluciones: Vec::new(),
+        }
+    }
+
+    pub fn push(&mut self, s: SolucionLite) {
+        self.soluciones.push(s);
+    }
 }

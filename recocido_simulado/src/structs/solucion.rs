@@ -30,7 +30,7 @@ impl<'a> Solucion<'a> {
         sol
     }
 
-    pub fn actualizacion(&mut self, a: &usize, b: &usize){
+    pub fn vecino(&mut self, a: &usize, b: &usize){
         self.actualizar(a,b);
     }
 
