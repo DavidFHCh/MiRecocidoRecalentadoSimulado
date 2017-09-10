@@ -1,3 +1,8 @@
 pub struct Soluciones {
-    soluciones : Vec<f64>,
+    pub soluciones : Vec<Sol_anterior>,
+}
+
+pub struct Sol_anterior {
+    pub f_obj: f64,
+    factible: bool, 
 }
