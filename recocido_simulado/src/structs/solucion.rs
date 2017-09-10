@@ -211,6 +211,8 @@ impl<'a> Solucion<'a> {
     fn f_promedio_max_1(&mut self) {
         let mut promedio: f64 = 0.0;
         let mut max: f64 = 0.0;
+        let mut fact: bool = true;
+
 
         let len = self.ciudades_solucion.len() as usize;
 
@@ -225,11 +227,13 @@ impl<'a> Solucion<'a> {
                 promedio = promedio + *dis;
             }else{
                 max = NO_EXISTENTE;
+                fact = false;
             }
         }
         self.sum_dist_exist = promedio;
         self.promedio = self.sum_dist_exist/(len as f64);
         self. max_dis_castigo = max;
+        self.factible = fact;
     }
 
     ///Priemera vez, segunda funcion a llamar.
