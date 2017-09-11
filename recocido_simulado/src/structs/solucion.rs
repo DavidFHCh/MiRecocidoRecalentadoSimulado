@@ -28,7 +28,6 @@ impl<'a> Solucion<'a> {
                 factible: false,
             };
         sol.recien_creado();
-        println!("{}, {}, {}, {}",sol.promedio,sol.sum_peso,sol.sum_dist_exist,sol.max_dis_castigo);
         sol
     }
 
@@ -62,7 +61,6 @@ impl<'a> Solucion<'a> {
             self.f_a_en_medio(b);
         }
         if self.sum_peso.is_sign_negative() {
-            println!("Really", );
         }
         self.swap(a,b);
         self.actualizar_maximo_factibilidad(&len);
@@ -84,10 +82,6 @@ impl<'a> Solucion<'a> {
         self.promedio = self.sum_dist_exist/(len as f64);
         self.f_obj = self.sum_peso/self.promedio;
 
-            println!("{}, {}, {}, {}",self.promedio,self.sum_peso,self.sum_dist_exist,self.max_dis_castigo);
-            if self.f_obj.is_sign_negative() {
-                println!("NOOOOO");
-        }
     }
 
     fn actualizar_maximo_factibilidad(&mut self,len: &usize) {//tambien checa factibilodad de la solucion.

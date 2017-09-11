@@ -8,13 +8,13 @@ use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
 
-static TAMLOTE: usize = 500;
-static EPSILON: f64 = 0.001;
-static EPSILON_P: f64 = 0.01;
-static EPSILON_T: f64 = 0.01;
+static TAMLOTE: usize = 200;
+static EPSILON: f64 = 0.009;
+static EPSILON_P: f64 = 0.002;
+static EPSILON_T: f64 = 0.002;
 static PHI: f64 = 0.9;
-static P: f64 = 0.95;
-static N: usize = 500;
+static P: f64 = 0.85;
+static N: usize = 200;
 
 
 pub struct RecocidoSimulado<'a> {
@@ -30,9 +30,9 @@ impl<'a> RecocidoSimulado<'a> {
     pub fn new(mut s_init: Vec<&'a Ciudad>,seed: [u32;4]) -> Self {
         let mut rng: XorShiftRng = SeedableRng::from_seed(seed);
         rng.shuffle(&mut s_init);
-        let mut s = Solucion::new(s_init);
+        let s = Solucion::new(s_init);
         let mut rs = RecocidoSimulado {
-            temp: 1.0,
+            temp: 7.0,
             solucion_act: s.clone(),
             solucion_min: s,
             rng: rng,
@@ -47,6 +47,7 @@ impl<'a> RecocidoSimulado<'a> {
         let mut r: f64 = 0.0;
         let mut a: usize;
         let mut b: usize;
+        let mut intentos: usize = 0;
 
         let len: usize = self.solucion_act.ciudades_solucion.len();
 
@@ -57,6 +58,7 @@ impl<'a> RecocidoSimulado<'a> {
             b = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             self.solucion_act.vecino(&a,&b);
             if self.solucion_act.f_obj <= (s.f_obj + self.temp) {
+                intentos = 0;
                 c = c + 1;
                 r = r + self.solucion_act.f_obj;
                 self.sols.push(SolucionLite::new(&self.solucion_act));//para el ploteo.
@@ -65,7 +67,11 @@ impl<'a> RecocidoSimulado<'a> {
                 }
 
             } else {
+                intentos = intentos + 1;
                 self.solucion_act = s;
+                if intentos == 4*TAMLOTE {
+                    return r/(c as f64)
+                }
             }
         }
         r = r/(TAMLOTE as f64);
@@ -76,16 +82,23 @@ impl<'a> RecocidoSimulado<'a> {
     pub fn aceptacion_umbrales(&mut self) {
         let mut p: f64 = 0.0;
         let mut q: f64 = f64::INFINITY;
+        let mut intentos = 0;
 
         while self.temp > EPSILON {
             let mut p_prim = q;
             while p <= p_prim {
                 p_prim = p;
                 p = self.calcula_lote();
-
                 q = p.clone();
+                //intentos = intentos + 1;
+                //if intentos > 10 {
+                //    intentos = 0;
+                //    break;
+                //}
+
             }
             self.temp = self.temp * PHI;
+            println!("{}", self.temp);
         }
     }
 
@@ -121,8 +134,8 @@ impl<'a> RecocidoSimulado<'a> {
         let len: usize = self.solucion_act.ciudades_solucion.len();
 
         for _i in 1..N {
-            let mut a = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
-            let mut b = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
+            let a = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
+            let b = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             let mut s_prim = s.clone();
             s_prim.vecino(&a, &b);
             if s_prim.f_obj <= (s.f_obj + self.temp) {
@@ -134,11 +147,11 @@ impl<'a> RecocidoSimulado<'a> {
     }
 
     fn busqueda_binaria(&mut self, t1: f64, t2: f64) {
-        let mut tm = (t1 + t2)/2.0;
+        let tm = (t1 + t2)/2.0;
         if (t2 - t1) < EPSILON_T {
             self.temp = tm;
         } else {
-            let mut p = self.porcent_acep();
+            let p = self.porcent_acep();
 
             if (P - p).abs() <= EPSILON_P {
                 self.temp = tm;
