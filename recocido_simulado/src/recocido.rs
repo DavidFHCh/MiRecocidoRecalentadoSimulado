@@ -51,6 +51,7 @@ impl<'a> RecocidoSimulado<'a> {
         let len: usize = self.solucion_act.ciudades_solucion.len();
 
         while c < TAMLOTE {
+
             let s = self.solucion_act.clone();
             a = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             b = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
@@ -68,6 +69,7 @@ impl<'a> RecocidoSimulado<'a> {
             }
         }
         r = r/(TAMLOTE as f64);
+
         r
     }
 
@@ -80,6 +82,7 @@ impl<'a> RecocidoSimulado<'a> {
             while p <= p_prim {
                 p_prim = p;
                 p = self.calcula_lote();
+
                 q = p.clone();
             }
             self.temp = self.temp * PHI;
