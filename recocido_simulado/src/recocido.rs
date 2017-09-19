@@ -9,7 +9,7 @@ use self::soluciones::Soluciones;
 use std::f64;
 
 static TAMLOTE: usize = 500;
-static EPSILON: f64 = 0.07;
+static EPSILON: f64 = 0.09;
 static EPSILON_P: f64 = 0.0002;
 static EPSILON_T: f64 = 0.0002;
 static PHI: f64 = 0.97;
