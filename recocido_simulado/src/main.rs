@@ -1,14 +1,16 @@
 extern crate recocido_simulado;
 extern crate config;
 extern crate time;
+extern crate gnuplot;
 
+use gnuplot::{Figure, Caption, Color};
 use recocido_simulado as rs;
 use rs::recocido::RecocidoSimulado;
 use rs::conexion_bd::get_ciudades;
 use rs::structs::ciudad::Ciudad;
 use config::{Config, File, FileFormat, Value};
 use time::{PreciseTime};
-use std::env;
+//use std::env;
 //use std::fs::File as FsFile;
 //use std::io::prelude::*;
 //use std::path::Path;
@@ -51,10 +53,6 @@ fn main() {
     let conj_ciudades = to_usize_vec(c.get_array("ciudad_ids").expect("No hay lista de ids de ciudades declarada en Ajustes.toml"));
     let print = c.get_bool("print").expect("No hay opcion print declarada en Ajustes.toml");
 
-    let _file_name: String = match env::args().nth(1) {
-        Some(name) => name,
-        None       => if print {panic!("No hay archivo de salida.")} else {"".to_string()}
-    };
     let conj_ciudades_ref = v_usize_to_ciudades(conj_ciudades,&ciudades);
     let exec_start = PreciseTime::now();
     for semilla in semillas {
@@ -67,6 +65,23 @@ fn main() {
         );
         recocido.aceptacion_umbrales();
         let sol_min = recocido.solucion_min;
+
+        if print {
+            let mut x = Vec::new();
+            let mut y = Vec::new();
+            let mut i = 0.0;
+            for sol in recocido.sols.soluciones {
+                y.push(sol.f_obj);
+                x.push(i);
+                i = i + 1.0;
+            }
+            let mut fg = Figure::new();
+            let str1 = format!("A line,{},{}",semilla,sol_min.factible).to_owned();
+            let str1_sliced: &str = &str1[..];
+            fg.axes2d().lines(&x, &y, &[Caption(str1_sliced), Color("blue")]);
+            fg.show();
+        }
+
         if sol_min.factible {
             factibles = factibles + 1;
             println!("-------------------------");
