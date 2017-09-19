@@ -10,6 +10,7 @@ use rs::conexion_bd::get_ciudades;
 use rs::structs::ciudad::Ciudad;
 use config::{Config, File, FileFormat, Value};
 use time::{PreciseTime};
+use std::f64::INFINITY;
 //use std::env;
 //use std::fs::File as FsFile;
 //use std::io::prelude::*;
@@ -47,6 +48,8 @@ fn main() {
     let mut c = Config::new();
     let mut factibles: usize = 0;
     let mut totales:usize = 0;
+    let mut f_min:f64 = INFINITY;
+    let mut sem_min = 0;
     let ciudades = get_ciudades().unwrap();
     c.merge(File::new("Ajustes", FileFormat::Toml).required(true)).expect("NO HAY ARCHIVO DE CONFIGURACION 'Ajustes.toml'");
     let semillas: Vec<u32> = to_u32_vec(c.get_array("semillas").expect("No hay lista de semillas declarada en Ajustes.toml"));
@@ -83,6 +86,10 @@ fn main() {
         }
 
         if sol_min.factible {
+            if sol_min.f_obj < f_min {
+                f_min = sol_min.f_obj.clone();
+                sem_min = semilla.clone();
+            }
             factibles = factibles + 1;
             println!("-------------------------");
             println!("semilla = {}",semilla);
@@ -99,4 +106,5 @@ fn main() {
     println!("Tiempo de ejucucion total: {}", exec_start.to(PreciseTime::now()));
     println!("numero de soluciones factibles: {}",factibles);
     println!("numero de semillas totales: {}",totales);
+    println!("Semilla: {}, f_obj_min: {}",sem_min,f_min);
 }
