@@ -1,7 +1,7 @@
 use structs::ciudad::Ciudad;
 use std::f64;
 
-static NO_EXISTENTE: f64 = 24822373537468.38;//usando el cuadrado de la distancia mas grande de la tabla connections. MAGIC NUMBER.
+static NO_EXISTENTE: f64 = 4982205.69+10000.0;//usando el cuadrado de la distancia mas grande de la tabla connections. MAGIC NUMBER.
 
 #[derive(Clone)]
 pub struct Solucion<'a>{
@@ -88,10 +88,10 @@ impl<'a> Solucion<'a> {
         let mut max: f64 = 0.0;
 
         for i in 0..(len-1) {
-            let ciudad_ac_vec = &self.ciudades_solucion[i].vecinos;
+            let ciudad_ac_vec = &self.ciudades_solucion[i].adyacencias;
             let id_ciudad_sig = &self.ciudades_solucion[i+1].ciudad_id;
-            if ciudad_ac_vec.contains_key(id_ciudad_sig) {
-                let dis = ciudad_ac_vec.get(id_ciudad_sig).unwrap();
+            if ciudad_ac_vec[*id_ciudad_sig as usize] != 0.0 {
+                let dis = &ciudad_ac_vec[*id_ciudad_sig as usize];
                 if *dis > max {
                     max = *dis;
                 }
@@ -106,10 +106,10 @@ impl<'a> Solucion<'a> {
     }
 
     fn  f_a_eq_len_des(&mut self,a: &usize) {
-        let ciudad_ac_vec = &self.ciudades_solucion[*a].vecinos;
+        let ciudad_ac_vec = &self.ciudades_solucion[*a].adyacencias;
         let id_ciudad_ant = &self.ciudades_solucion[*a-1].ciudad_id;
-        if ciudad_ac_vec.contains_key(id_ciudad_ant) {
-            let dis = ciudad_ac_vec.get(id_ciudad_ant).unwrap();
+        if ciudad_ac_vec[*id_ciudad_ant as usize] != 0.0 {
+            let dis = &ciudad_ac_vec[*id_ciudad_ant as usize];
             self.sum_dist_exist = self.sum_dist_exist + dis;
             self.sum_peso = self.sum_peso + dis;
         } else {
@@ -118,10 +118,10 @@ impl<'a> Solucion<'a> {
     }
 
     fn  f_a_eq_0_des(&mut self,a: &usize) {
-        let ciudad_ac_vec = &self.ciudades_solucion[*a].vecinos;
+        let ciudad_ac_vec = &self.ciudades_solucion[*a].adyacencias;
         let id_ciudad_sig = &self.ciudades_solucion[*a+1].ciudad_id;
-        if ciudad_ac_vec.contains_key(id_ciudad_sig) {
-            let dis = ciudad_ac_vec.get(id_ciudad_sig).unwrap();
+        if ciudad_ac_vec[*id_ciudad_sig as usize] != 0.0 {
+            let dis = &ciudad_ac_vec[*id_ciudad_sig as usize];
             self.sum_dist_exist = self.sum_dist_exist + dis;
             self.sum_peso = self.sum_peso + dis;
         } else {
@@ -130,18 +130,18 @@ impl<'a> Solucion<'a> {
     }
 
     fn  f_a_en_medio_des(&mut self,a: &usize) {
-        let ciudad_ac_vec = &self.ciudades_solucion[*a].vecinos;
+        let ciudad_ac_vec = &self.ciudades_solucion[*a].adyacencias;
         let id_ciudad_sig = &self.ciudades_solucion[*a+1].ciudad_id;
         let id_ciudad_ant = &self.ciudades_solucion[*a-1].ciudad_id;
-        if ciudad_ac_vec.contains_key(id_ciudad_sig) {
-            let dis = ciudad_ac_vec.get(id_ciudad_sig).unwrap();
+        if ciudad_ac_vec[*id_ciudad_sig as usize] != 0.0 {
+            let dis = &ciudad_ac_vec[*id_ciudad_sig as usize];
             self.sum_dist_exist = self.sum_dist_exist + dis;
             self.sum_peso = self.sum_peso + dis;
         } else {
             self.sum_peso = self.sum_peso + self.max_dis_castigo;
         }
-        if ciudad_ac_vec.contains_key(id_ciudad_ant) {
-            let dis = ciudad_ac_vec.get(id_ciudad_ant).unwrap();
+        if ciudad_ac_vec[*id_ciudad_ant as usize] != 0.0 {
+            let dis = &ciudad_ac_vec[*id_ciudad_ant as usize];
             self.sum_dist_exist = self.sum_dist_exist + dis;
             self.sum_peso = self.sum_peso + dis;
         } else {
@@ -151,10 +151,10 @@ impl<'a> Solucion<'a> {
 
     ///Funcion para cuando a o b son iguales a len1. Antes de swap
     fn f_a_eq_len(&mut self,a: &usize) {
-        let ciudad_ac_vec = &self.ciudades_solucion[*a].vecinos;
+        let ciudad_ac_vec = &self.ciudades_solucion[*a].adyacencias;
         let id_ciudad_ant = &self.ciudades_solucion[*a-1].ciudad_id;
-        if ciudad_ac_vec.contains_key(id_ciudad_ant) {
-            let dis = ciudad_ac_vec.get(id_ciudad_ant).unwrap();
+        if ciudad_ac_vec[*id_ciudad_ant as usize] != 0.0 {
+            let dis = &ciudad_ac_vec[*id_ciudad_ant as usize];
             self.sum_dist_exist = self.sum_dist_exist - dis;
             self.sum_peso = self.sum_peso - dis;
         } else {
@@ -164,10 +164,10 @@ impl<'a> Solucion<'a> {
 
     ///Funcion para cuando a o b son iguales a 0. Antes de swap
     fn f_a_eq_0(&mut self, a: &usize) {
-        let ciudad_ac_vec = &self.ciudades_solucion[*a].vecinos;
+        let ciudad_ac_vec = &self.ciudades_solucion[*a].adyacencias;
         let id_ciudad_sig = &self.ciudades_solucion[*a+1].ciudad_id;
-        if ciudad_ac_vec.contains_key(id_ciudad_sig) {
-            let dis = ciudad_ac_vec.get(id_ciudad_sig).unwrap();
+        if ciudad_ac_vec[*id_ciudad_sig as usize] != 0.0 {
+            let dis = &ciudad_ac_vec[*id_ciudad_sig as usize];
             self.sum_dist_exist = self.sum_dist_exist - dis;
             self.sum_peso = self.sum_peso - dis;
         } else {
@@ -177,18 +177,18 @@ impl<'a> Solucion<'a> {
 
     /// funcion para cuando a esta en medio. Antes de swap.
     fn f_a_en_medio(&mut self, a: &usize){
-        let ciudad_ac_vec = &self.ciudades_solucion[*a].vecinos;
+        let ciudad_ac_vec = &self.ciudades_solucion[*a].adyacencias;
         let id_ciudad_sig = &self.ciudades_solucion[*a+1].ciudad_id;
         let id_ciudad_ant = &self.ciudades_solucion[*a-1].ciudad_id;
-        if ciudad_ac_vec.contains_key(id_ciudad_sig) {
-            let dis = ciudad_ac_vec.get(id_ciudad_sig).unwrap();
+        if ciudad_ac_vec[*id_ciudad_sig as usize] != 0.0 {
+            let dis = &ciudad_ac_vec[*id_ciudad_sig as usize];
             self.sum_dist_exist = self.sum_dist_exist - dis;
             self.sum_peso = self.sum_peso - dis;
         } else {
             self.sum_peso = self.sum_peso - self.max_dis_castigo;
         }
-        if ciudad_ac_vec.contains_key(id_ciudad_ant) {
-            let dis = ciudad_ac_vec.get(id_ciudad_ant).unwrap();
+        if ciudad_ac_vec[*id_ciudad_ant as usize] != 0.0 {
+            let dis = &ciudad_ac_vec[*id_ciudad_ant as usize];
             self.sum_dist_exist = self.sum_dist_exist - dis;
             self.sum_peso = self.sum_peso - dis;
         } else {
@@ -215,10 +215,10 @@ impl<'a> Solucion<'a> {
         let len = self.ciudades_solucion.len() as usize;
 
         for i in 0..(len-1) {
-            let ciudad_ac_vec = &self.ciudades_solucion[i].vecinos;
+            let ciudad_ac_vec = &self.ciudades_solucion[i].adyacencias;
             let id_ciudad_sig = &self.ciudades_solucion[i+1].ciudad_id;
-            if ciudad_ac_vec.contains_key(id_ciudad_sig) {
-                let dis = ciudad_ac_vec.get(id_ciudad_sig).unwrap();
+            if ciudad_ac_vec[*id_ciudad_sig as usize] != 0.0 {
+                let dis = &ciudad_ac_vec[*id_ciudad_sig as usize];
                 if *dis > max {
                     max = *dis;
                 }
@@ -240,10 +240,10 @@ impl<'a> Solucion<'a> {
         let len = self.ciudades_solucion.len() as usize;
 
         for i in 0..(len-1) {
-            let ciudad_ac_vec = &self.ciudades_solucion[i].vecinos;
+            let ciudad_ac_vec = &self.ciudades_solucion[i].adyacencias;
             let id_ciudad_sig = &self.ciudades_solucion[i+1].ciudad_id;
-            if ciudad_ac_vec.contains_key(id_ciudad_sig) {
-                let dis = ciudad_ac_vec.get(id_ciudad_sig).unwrap();
+            if ciudad_ac_vec[*id_ciudad_sig as usize] != 0.0 {
+                let dis = &ciudad_ac_vec[*id_ciudad_sig as usize];
                 sum_peso = sum_peso + dis;
             }else{
                 sum_peso = sum_peso + self.max_dis_castigo;

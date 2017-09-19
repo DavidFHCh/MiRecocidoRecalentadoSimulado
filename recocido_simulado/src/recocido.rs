@@ -8,19 +8,20 @@ use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
 
-static TAMLOTE: usize = 200;
-static EPSILON: f64 = 0.009;
+static TAMLOTE: usize = 500;
+static EPSILON: f64 = 0.02;
 static EPSILON_P: f64 = 0.002;
 static EPSILON_T: f64 = 0.002;
-static PHI: f64 = 0.9;
-static P: f64 = 0.85;
-static N: usize = 200;
+static PHI: f64 = 0.95;
+static P: f64 = 0.7;
+static N: usize = 400;
 
 
 pub struct RecocidoSimulado<'a> {
     pub temp: f64,
     pub solucion_act: Solucion<'a>,
     pub solucion_min: Solucion<'a>,
+    pub solucion_temp: Solucion<'a>,
     pub rng: XorShiftRng,
     pub sols: Soluciones,
 }
@@ -34,7 +35,8 @@ impl<'a> RecocidoSimulado<'a> {
         let mut rs = RecocidoSimulado {
             temp: 7.0,
             solucion_act: s.clone(),
-            solucion_min: s,
+            solucion_min: s.clone(),
+            solucion_temp: s.clone(),
             rng: rng,
             sols: Soluciones::new(),
         };
@@ -58,6 +60,7 @@ impl<'a> RecocidoSimulado<'a> {
             b = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             self.solucion_act.vecino(&a,&b);
             if self.solucion_act.f_obj <= (s.f_obj + self.temp) {
+                //println!("E:{}",self.solucion_act.f_obj);
                 intentos = 0;
                 c = c + 1;
                 r = r + self.solucion_act.f_obj;
@@ -82,7 +85,7 @@ impl<'a> RecocidoSimulado<'a> {
     pub fn aceptacion_umbrales(&mut self) {
         let mut p: f64 = 0.0;
         let mut q: f64 = f64::INFINITY;
-        let mut intentos = 0;
+        //let mut intentos = 0;
 
         while self.temp > EPSILON {
             let mut p_prim = q;
@@ -98,12 +101,15 @@ impl<'a> RecocidoSimulado<'a> {
 
             }
             self.temp = self.temp * PHI;
-            println!("{}", self.temp);
+            //println!("{}", self.temp);
         }
     }
 
     fn temp_inicial(&mut self){
-        let mut p = self.porcent_acep();
+        let mut solucion_temp = self.solucion_temp.clone();
+        let mut p1 = self.porcent_acep(solucion_temp);
+        let mut p = p1.0;
+        solucion_temp = p1.1;
         let mut temp_1: f64= 0.0;
         let mut temp_2: f64= 0.0;
 
@@ -112,24 +118,28 @@ impl<'a> RecocidoSimulado<'a> {
         } else if p < P {
             while p < P {
                 self.temp = 2.0 * self.temp;
-                p = self.porcent_acep();
+                p1 = self.porcent_acep(solucion_temp);
+                p = p1.0;
+                solucion_temp = p1.1;
             }
             temp_1 = self.temp/2.0;
             temp_2 = self.temp.clone();
         } else {
             while p > P {
                 self.temp = self.temp/2.0;
-                p = self.porcent_acep();
+                p1 = self.porcent_acep(solucion_temp);
+                p = p1.0;
+                solucion_temp = p1.1;
             }
             temp_1 = self.temp.clone();
             temp_2 = self.temp*2.0;
         }
-        self.busqueda_binaria(temp_1, temp_2);
+        self.busqueda_binaria(temp_1, temp_2,solucion_temp);
     }
 
-    fn porcent_acep(&mut self) -> f64{
+    fn porcent_acep(&mut self,mut solucion_temp: Solucion<'a>) -> (f64,Solucion<'a>){
         let mut c: f64 = 0.0;
-        let mut s = self.solucion_act.clone();
+        let mut s = solucion_temp;
 
         let len: usize = self.solucion_act.ciudades_solucion.len();
 
@@ -143,22 +153,25 @@ impl<'a> RecocidoSimulado<'a> {
             }
             s = s_prim;
         }
-        c/(N as f64)
+        solucion_temp = s;
+        (c/(N as f64),solucion_temp)
     }
 
-    fn busqueda_binaria(&mut self, t1: f64, t2: f64) {
+    fn busqueda_binaria(&mut self, t1: f64, t2: f64,mut solucion_temp: Solucion<'a>) {
         let tm = (t1 + t2)/2.0;
         if (t2 - t1) < EPSILON_T {
             self.temp = tm;
         } else {
-            let p = self.porcent_acep();
+            let p1 = self.porcent_acep(solucion_temp);
+            let p = p1.0;
+            solucion_temp = p1.1;
 
             if (P - p).abs() <= EPSILON_P {
                 self.temp = tm;
             } else if p > P {
-                self.busqueda_binaria(t1,tm);
+                self.busqueda_binaria(t1,tm,solucion_temp);
             }else {
-                self.busqueda_binaria(tm,t2);
+                self.busqueda_binaria(tm,t2,solucion_temp);
             }
         }
     }
