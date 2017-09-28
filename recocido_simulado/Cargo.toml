@@ -1,6 +1,6 @@
 [package]
 name = "recocido_simulado"
-version = "1.0.0"
+version = "2.0.0"
 authors = ["DavidFHCh <davfep_96@ciencias.unam.mx>"]
 
 [dependencies]
