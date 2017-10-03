@@ -67,7 +67,7 @@ fn main() {
             [semilla,semilla*2,semilla*3,semilla*5]
         );
         recocido.aceptacion_umbrales();
-        let sol_min = recocido.solucion_min;
+        let mut sol_min = recocido.solucion_min;
 
         if print {
             let mut x = Vec::new();
@@ -84,7 +84,8 @@ fn main() {
             fg.axes2d().lines(&x, &y, &[Caption(str1_sliced), Color("blue")]);
             fg.show();
         }
-
+        let len = sol_min.ciudades_solucion.len();
+        sol_min.actualizar_factibilidad(&len);
         if sol_min.factible {
             if sol_min.f_obj < f_min {
                 f_min = sol_min.f_obj.clone();

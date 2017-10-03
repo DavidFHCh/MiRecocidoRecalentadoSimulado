@@ -60,7 +60,7 @@ impl<'a> Solucion<'a> {
         }
 
         self.swap(a,b);
-        self.actualizar_factibilidad(&len);
+        //self.actualizar_factibilidad(&len);
 
         if ab_len {
             self.f_a_eq_len_des(a);
@@ -80,7 +80,7 @@ impl<'a> Solucion<'a> {
 
     }
 
-    fn actualizar_factibilidad(&mut self,len: &usize) {//tambien checa factibilodad de la solucion.
+    pub fn actualizar_factibilidad(&mut self,len: &usize) {//tambien checa factibilodad de la solucion.
 
         for i in 0..(len-1) {
             let ciudad_ac_vec = &self.ciudades_solucion[i].adyacencias;
@@ -207,7 +207,7 @@ impl<'a> Solucion<'a> {
     fn f_obj_1(&mut self) {
         let mut sum_peso: f64 = 0.0;
         let len = self.ciudades_solucion.len() as usize;
-        let mut fact = true;
+        //let mut fact = true;
 
         for i in 0..(len-1) {
             let ciudad_ac_vec = &self.ciudades_solucion[i].adyacencias;
@@ -217,10 +217,10 @@ impl<'a> Solucion<'a> {
                 sum_peso = sum_peso + dis;
             }else{
                 sum_peso = sum_peso + self.max_dis_castigo;
-                fact = false;
+                //fact = false;
             }
         }
-        self.factible = fact;
+        //self.factible = fact;
         self.sum_peso = sum_peso;
         self.f_obj = self.sum_peso/self.promedio;
     }
