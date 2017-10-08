@@ -4,7 +4,7 @@ use self::rusqlite::Connection;
 use structs::ciudad::Ciudad;
 use structs::conexion::Conexion;
 
-const NUM_CIUDADES: usize = 1099;
+const NUM_CIUDADES: usize = 1093;
 
 /// Regresa un Result que contiene un vector de ciudades o un error de rusqlite.
 ///
@@ -14,11 +14,11 @@ const NUM_CIUDADES: usize = 1099;
 /// use recocido_simulado::conexion_bd::get_ciudades;
 /// fn main() {
 ///     let ciudades = get_ciudades().unwrap();
-///     assert_eq!(ciudades.len(),1099);
+///     assert_eq!(ciudades.len(),1093);
 /// }
 /// ```
 pub fn get_ciudades<'a>() -> Result<Vec<Ciudad>, rusqlite::Error> {
-    let path_db = Path::new("../resources/world.db");
+    let path_db = Path::new("../resources/tsp.db");
     let conexion = Connection::open(path_db).unwrap();
     let mut ciudades = Vec::with_capacity(NUM_CIUDADES);
 

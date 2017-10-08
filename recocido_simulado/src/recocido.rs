@@ -8,13 +8,13 @@ use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
 
-static TAMLOTE: usize = 500;
-static EPSILON: f64 = 0.02;
+static TAMLOTE: usize = 200;
+static EPSILON: f64 = 0.04;
 static EPSILON_P: f64 = 0.0001;
 static EPSILON_T: f64 = 0.0001;
-static PHI: f64 = 0.98;
-static P: f64 = 0.9;
-static N: usize = 500;
+static PHI: f64 = 0.9;
+static P: f64 = 0.85;
+static N: usize = 200;
 
 
 pub struct RecocidoSimulado<'a> {
@@ -33,7 +33,7 @@ impl<'a> RecocidoSimulado<'a> {
         rng.shuffle(&mut s_init);
         let s = Solucion::new(s_init);
         let mut rs = RecocidoSimulado {
-            temp: 7.0,
+            temp: 13.0,
             solucion_act: s.clone(),
             solucion_min: s.clone(),
             solucion_temp: s.clone(),
@@ -72,7 +72,7 @@ impl<'a> RecocidoSimulado<'a> {
             } else {
                 intentos = intentos + 1;
                 self.solucion_act = s;
-                if intentos == 4*TAMLOTE {
+                if intentos == 2*TAMLOTE {
                     return r/(c as f64)
                 }
             }
@@ -93,11 +93,11 @@ impl<'a> RecocidoSimulado<'a> {
                 p_prim = p;
                 p = self.calcula_lote();
                 q = p.clone();
-                //intentos = intentos + 1;
-                //if intentos > 10 {
-                //    intentos = 0;
-                //    break;
-                //}
+                /*intentos = intentos + 1;
+                if intentos > 100 {
+                    intentos = 0;
+                    break;
+                }*/
 
             }
             self.temp = self.temp * PHI;

@@ -1,0 +1,404 @@
+Tiempo de ejecucion: PT1.934466919S
+-------------------------
+Tiempo de ejecucion: PT1.986607714S
+-------------------------
+Tiempo de ejecucion: PT1.898664416S
+-------------------------
+Tiempo de ejecucion: PT1.961929028S
+-------------------------
+Tiempo de ejecucion: PT1.859244153S
+-------------------------
+Tiempo de ejecucion: PT2.348352511S
+-------------------------
+Tiempo de ejecucion: PT1.997064072S
+-------------------------
+Tiempo de ejecucion: PT1.882388126S
+-------------------------
+Tiempo de ejecucion: PT1.960625608S
+-------------------------
+Tiempo de ejecucion: PT1.745901544S
+-------------------------
+Tiempo de ejecucion: PT1.823555399S
+-------------------------
+Tiempo de ejecucion: PT1.909953526S
+-------------------------
+Tiempo de ejecucion: PT2.000873789S
+-------------------------
+Tiempo de ejecucion: PT2.041251263S
+-------------------------
+Tiempo de ejecucion: PT2.240740540S
+-------------------------
+Tiempo de ejecucion: PT1.539725167S
+-------------------------
+Tiempo de ejecucion: PT2.047175111S
+-------------------------
+Tiempo de ejecucion: PT2.040149260S
+-------------------------
+Tiempo de ejecucion: PT2.062066522S
+-------------------------
+Tiempo de ejecucion: PT1.937407218S
+-------------------------
+Tiempo de ejecucion: PT2.636068961S
+-------------------------
+Tiempo de ejecucion: PT2.312211423S
+-------------------------
+Tiempo de ejecucion: PT2.079944649S
+-------------------------
+Tiempo de ejecucion: PT1.651346147S
+-------------------------
+Tiempo de ejecucion: PT1.964349534S
+-------------------------
+Tiempo de ejecucion: PT1.635464524S
+-------------------------
+Tiempo de ejecucion: PT2.044475562S
+-------------------------
+Tiempo de ejecucion: PT1.617723898S
+-------------------------
+Tiempo de ejecucion: PT1.526986427S
+-------------------------
+Tiempo de ejecucion: PT1.925962315S
+-------------------------
+Tiempo de ejecucion: PT1.894595780S
+-------------------------
+Tiempo de ejecucion: PT2.302640857S
+-------------------------
+Tiempo de ejecucion: PT2.099508738S
+-------------------------
+Tiempo de ejecucion: PT1.794285745S
+-------------------------
+Tiempo de ejecucion: PT1.905460849S
+-------------------------
+Tiempo de ejecucion: PT2.057947220S
+-------------------------
+Tiempo de ejecucion: PT1.981731743S
+-------------------------
+Tiempo de ejecucion: PT1.930044867S
+-------------------------
+Tiempo de ejecucion: PT1.868842510S
+-------------------------
+Tiempo de ejecucion: PT2.036985586S
+-------------------------
+Tiempo de ejecucion: PT2.151389031S
+-------------------------
+Tiempo de ejecucion: PT2.074244552S
+-------------------------
+Tiempo de ejecucion: PT1.951751003S
+-------------------------
+Tiempo de ejecucion: PT1.725220660S
+-------------------------
+Tiempo de ejecucion: PT1.623570079S
+-------------------------
+Tiempo de ejecucion: PT1.990960182S
+-------------------------
+Tiempo de ejecucion: PT1.483335112S
+-------------------------
+Tiempo de ejecucion: PT1.969554254S
+-------------------------
+Tiempo de ejecucion: PT2.143369428S
+-------------------------
+Tiempo de ejecucion: PT1.902975717S
+-------------------------
+Tiempo de ejecucion: PT1.881621790S
+-------------------------
+Tiempo de ejecucion: PT2.147854189S
+-------------------------
+Tiempo de ejecucion: PT2.048945865S
+-------------------------
+Tiempo de ejecucion: PT2.200487442S
+-------------------------
+Tiempo de ejecucion: PT2.193928843S
+-------------------------
+Tiempo de ejecucion: PT2.123823005S
+-------------------------
+Tiempo de ejecucion: PT2.166694568S
+-------------------------
+Tiempo de ejecucion: PT1.204992018S
+-------------------------
+Tiempo de ejecucion: PT1.525752507S
+-------------------------
+Tiempo de ejecucion: PT1.842144611S
+-------------------------
+Tiempo de ejecucion: PT2.060869227S
+-------------------------
+Tiempo de ejecucion: PT1.970472757S
+-------------------------
+Tiempo de ejecucion: PT2.138544291S
+-------------------------
+Tiempo de ejecucion: PT1.871817599S
+-------------------------
+Tiempo de ejecucion: PT1.825560695S
+-------------------------
+Tiempo de ejecucion: PT2.290982120S
+-------------------------
+Tiempo de ejecucion: PT1.979422654S
+-------------------------
+Tiempo de ejecucion: PT1.791046528S
+-------------------------
+Tiempo de ejecucion: PT2.031006571S
+-------------------------
+Tiempo de ejecucion: PT1.470920291S
+-------------------------
+Tiempo de ejecucion: PT1.944723819S
+-------------------------
+Tiempo de ejecucion: PT2.142743968S
+-------------------------
+Tiempo de ejecucion: PT2.338642361S
+-------------------------
+Tiempo de ejecucion: PT1.755609317S
+-------------------------
+Tiempo de ejecucion: PT2.037005668S
+-------------------------
+Tiempo de ejecucion: PT1.981428784S
+-------------------------
+Tiempo de ejecucion: PT2.219675905S
+-------------------------
+Tiempo de ejecucion: PT1.978762610S
+-------------------------
+Tiempo de ejecucion: PT1.586800905S
+-------------------------
+Tiempo de ejecucion: PT1.999581744S
+-------------------------
+Tiempo de ejecucion: PT1.960185939S
+-------------------------
+Tiempo de ejecucion: PT2.117712865S
+-------------------------
+Tiempo de ejecucion: PT1.885778842S
+-------------------------
+Tiempo de ejecucion: PT1.981066699S
+-------------------------
+Tiempo de ejecucion: PT1.912082448S
+-------------------------
+Tiempo de ejecucion: PT1.876853320S
+-------------------------
+Tiempo de ejecucion: PT1.042869081S
+-------------------------
+Tiempo de ejecucion: PT2.222253119S
+-------------------------
+Tiempo de ejecucion: PT2.441594820S
+-------------------------
+Tiempo de ejecucion: PT2.146300851S
+-------------------------
+Tiempo de ejecucion: PT1.780942379S
+-------------------------
+Tiempo de ejecucion: PT1.977171272S
+-------------------------
+Tiempo de ejecucion: PT2.145145932S
+-------------------------
+Tiempo de ejecucion: PT2.018953125S
+-------------------------
+Tiempo de ejecucion: PT2.147217311S
+-------------------------
+Tiempo de ejecucion: PT2.040755261S
+-------------------------
+Tiempo de ejecucion: PT2.066912575S
+-------------------------
+Tiempo de ejecucion: PT2.105670335S
+-------------------------
+Tiempo de ejecucion: PT2.342878039S
+-------------------------
+Tiempo de ejecucion: PT1.909990525S
+-------------------------
+Tiempo de ejecucion: PT2.224567250S
+-------------------------
+Tiempo de ejecucion: PT2.136341702S
+-------------------------
+Tiempo de ejecucion: PT1.884353088S
+-------------------------
+Tiempo de ejecucion: PT1.938794846S
+-------------------------
+Tiempo de ejecucion: PT2.103695289S
+-------------------------
+Tiempo de ejecucion: PT1.601426941S
+-------------------------
+Tiempo de ejecucion: PT2.133760987S
+-------------------------
+Tiempo de ejecucion: PT2.269935653S
+-------------------------
+Tiempo de ejecucion: PT1.819259721S
+-------------------------
+Tiempo de ejecucion: PT1.837104514S
+-------------------------
+Tiempo de ejecucion: PT1.868048591S
+-------------------------
+Tiempo de ejecucion: PT2.296508425S
+-------------------------
+Tiempo de ejecucion: PT2.096691397S
+-------------------------
+Tiempo de ejecucion: PT1.921943721S
+-------------------------
+Tiempo de ejecucion: PT1.841761193S
+-------------------------
+Tiempo de ejecucion: PT2.451261926S
+-------------------------
+Tiempo de ejecucion: PT2.040323176S
+-------------------------
+Tiempo de ejecucion: PT1.836839639S
+-------------------------
+Tiempo de ejecucion: PT2.205576870S
+-------------------------
+Tiempo de ejecucion: PT2.015357865S
+-------------------------
+Tiempo de ejecucion: PT2.346174462S
+-------------------------
+Tiempo de ejecucion: PT2.062293563S
+-------------------------
+Tiempo de ejecucion: PT1.933389791S
+-------------------------
+Tiempo de ejecucion: PT1.935277170S
+-------------------------
+Tiempo de ejecucion: PT2.091274675S
+-------------------------
+Tiempo de ejecucion: PT2.023020717S
+-------------------------
+Tiempo de ejecucion: PT2.059167139S
+-------------------------
+Tiempo de ejecucion: PT2.019147832S
+-------------------------
+Tiempo de ejecucion: PT2.112009434S
+-------------------------
+Tiempo de ejecucion: PT1.999853161S
+-------------------------
+Tiempo de ejecucion: PT2.049532032S
+-------------------------
+Tiempo de ejecucion: PT2.192085754S
+-------------------------
+Tiempo de ejecucion: PT1.933769917S
+-------------------------
+Tiempo de ejecucion: PT2.078625227S
+-------------------------
+Tiempo de ejecucion: PT1.662134547S
+-------------------------
+Tiempo de ejecucion: PT2.020834337S
+-------------------------
+Tiempo de ejecucion: PT2.006703969S
+-------------------------
+Tiempo de ejecucion: PT1.779077790S
+-------------------------
+Tiempo de ejecucion: PT1.645683298S
+-------------------------
+Tiempo de ejecucion: PT1.827060656S
+-------------------------
+Tiempo de ejecucion: PT2.171603704S
+-------------------------
+Tiempo de ejecucion: PT1.928686488S
+-------------------------
+Tiempo de ejecucion: PT1.985697709S
+-------------------------
+Tiempo de ejecucion: PT1.992829602S
+-------------------------
+Tiempo de ejecucion: PT2.279338132S
+-------------------------
+Tiempo de ejecucion: PT1.881558123S
+-------------------------
+Tiempo de ejecucion: PT2.246964929S
+-------------------------
+Tiempo de ejecucion: PT2.446360956S
+-------------------------
+Tiempo de ejecucion: PT2.191948795S
+-------------------------
+Tiempo de ejecucion: PT2.037070835S
+-------------------------
+Tiempo de ejecucion: PT2.504532931S
+-------------------------
+Tiempo de ejecucion: PT2.056374007S
+-------------------------
+Tiempo de ejecucion: PT2.174608086S
+-------------------------
+Tiempo de ejecucion: PT2.423317942S
+-------------------------
+Tiempo de ejecucion: PT1.429755564S
+-------------------------
+Tiempo de ejecucion: PT2.259420542S
+-------------------------
+Tiempo de ejecucion: PT2.292217664S
+-------------------------
+Tiempo de ejecucion: PT2.144346637S
+-------------------------
+Tiempo de ejecucion: PT2.056849340S
+-------------------------
+Tiempo de ejecucion: PT1.978732609S
+-------------------------
+Tiempo de ejecucion: PT1.991792016S
+-------------------------
+Tiempo de ejecucion: PT2.510947738S
+-------------------------
+Tiempo de ejecucion: PT1.928708445S
+-------------------------
+Tiempo de ejecucion: PT1.963870114S
+-------------------------
+Tiempo de ejecucion: PT1.834908051S
+-------------------------
+Tiempo de ejecucion: PT2.003913045S
+-------------------------
+Tiempo de ejecucion: PT2.016953285S
+-------------------------
+Tiempo de ejecucion: PT1.934533710S
+-------------------------
+Tiempo de ejecucion: PT2.040008133S
+-------------------------
+Tiempo de ejecucion: PT1.720228229S
+-------------------------
+Tiempo de ejecucion: PT2.890325578S
+-------------------------
+Tiempo de ejecucion: PT2.845833220S
+-------------------------
+Tiempo de ejecucion: PT2.973917657S
+-------------------------
+Tiempo de ejecucion: PT2.960558874S
+-------------------------
+Tiempo de ejecucion: PT3.097768167S
+-------------------------
+Tiempo de ejecucion: PT2.562009112S
+-------------------------
+Tiempo de ejecucion: PT3.407939130S
+-------------------------
+Tiempo de ejecucion: PT3.203766341S
+-------------------------
+Tiempo de ejecucion: PT2.228339258S
+-------------------------
+Tiempo de ejecucion: PT2.032817074S
+-------------------------
+Tiempo de ejecucion: PT1.702194936S
+-------------------------
+Tiempo de ejecucion: PT2.263697177S
+-------------------------
+Tiempo de ejecucion: PT2.999712719S
+-------------------------
+Tiempo de ejecucion: PT2.250106353S
+-------------------------
+Tiempo de ejecucion: PT2.038059129S
+-------------------------
+Tiempo de ejecucion: PT1.978756192S
+-------------------------
+Tiempo de ejecucion: PT1.671005276S
+-------------------------
+Tiempo de ejecucion: PT2.028838564S
+-------------------------
+Tiempo de ejecucion: PT1.999695743S
+-------------------------
+Tiempo de ejecucion: PT2.033073824S
+-------------------------
+Tiempo de ejecucion: PT1.800996551S
+-------------------------
+Tiempo de ejecucion: PT1.864696247S
+-------------------------
+Tiempo de ejecucion: PT1.778356329S
+-------------------------
+Tiempo de ejecucion: PT2.062495604S
+-------------------------
+Tiempo de ejecucion: PT2.157501877S
+-------------------------
+Tiempo de ejecucion: PT2.214462891S
+-------------------------
+Tiempo de ejecucion: PT2.102220242S
+-------------------------
+Tiempo de ejecucion: PT2.021155337S
+-------------------------
+Tiempo de ejecucion: PT1.620073486S
+-------------------------
+Tiempo de ejecucion: PT1.790170900S
+-------------------------
+Tiempo de ejucucion total: PT407.994689887S
+numero de soluciones factibles: 0
+numero de semillas totales: 200
+Semilla: 0, f_obj_min: inf
