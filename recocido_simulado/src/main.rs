@@ -102,7 +102,9 @@ fn main() {
             }
             println!("]");
         }
-        println!("Tiempo de ejecucion: {}", now.to(PreciseTime::now()));
+        println!("semilla = {}",semilla);
+        println!("funcion de costo : {}", sol_min.f_obj);
+        //println!("Tiempo de ejecucion: {}", now.to(PreciseTime::now()));
         println!("-------------------------");
     }
     println!("Tiempo de ejucucion total: {}", exec_start.to(PreciseTime::now()));

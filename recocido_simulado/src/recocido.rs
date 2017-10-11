@@ -8,13 +8,13 @@ use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
 
-static TAMLOTE: usize = 200;
-static EPSILON: f64 = 0.04;
+static TAMLOTE: usize = 500;
+static EPSILON: f64 = 0.0000004;
 static EPSILON_P: f64 = 0.0001;
 static EPSILON_T: f64 = 0.0001;
-static PHI: f64 = 0.9;
-static P: f64 = 0.85;
-static N: usize = 200;
+static PHI: f64 = 0.98;
+static P: f64 = 0.75;
+static N: usize = 1000;
 
 
 pub struct RecocidoSimulado<'a> {

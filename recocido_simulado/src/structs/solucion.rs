@@ -1,7 +1,8 @@
 use structs::ciudad::Ciudad;
 use std::f64;
+use std::vec::Vec;
 
-static NO_EXISTENTE: f64 = 3.5;//MAGIC NUMBER.
+static NO_EXISTENTE: f64 = 10.0;//MAGIC NUMBER.
 
 #[derive(Clone)]
 pub struct Solucion<'a>{
@@ -76,8 +77,8 @@ impl<'a> Solucion<'a> {
         } else {
             self.f_a_en_medio_des(b);
         }
-        self.f_obj = self.sum_peso/self.promedio;
-
+        self.f_obj = self.sum_peso/(self.promedio*(len as f64 -1.0));
+        //println!("{}", self.promedio);
     }
 
     pub fn actualizar_factibilidad(&mut self,len: &usize) {//tambien checa factibilodad de la solucion.
@@ -189,18 +190,25 @@ impl<'a> Solucion<'a> {
         let mut max: f64 = 0.0;
         let mut aristas: f64 = 0.0;
         let mut prom: f64 = 0.0;
-        for i in 0..self.ciudades_solucion.len() {
-            for j in (i+1)..self.ciudades_solucion.len() {
-                let vecinos_act_dist = self.ciudades_solucion[i].adyacencias[j].clone();
-                if vecinos_act_dist > max  && vecinos_act_dist > 0.0{
+        let mut ciudades_solucion = self.ciudades_solucion.clone();
+        for i in 0..ciudades_solucion.len() {
+            for j in 0..ciudades_solucion.len() {
+                let vecinos_act_dist = ciudades_solucion[i].adyacencias[j].clone();
+                if vecinos_act_dist > max {
+                    max = vecinos_act_dist.clone();
+                }
+                if vecinos_act_dist > 0.0{
                     prom = prom + vecinos_act_dist;
-                    max = vecinos_act_dist;
                     aristas = aristas + 1.0;
                 }
             }
         }
         self.max_dis_castigo = NO_EXISTENTE*max;
-        self.promedio = prom/aristas;
+        prom = prom/2.0;
+        aristas = aristas/2.0;
+        self.promedio = prom/(aristas);
+        println!("{}", self.promedio);
+        println!("{}", aristas);
     }
 
     ///Priemera vez, segunda funcion a llamar.
@@ -222,7 +230,7 @@ impl<'a> Solucion<'a> {
         }
         //self.factible = fact;
         self.sum_peso = sum_peso;
-        self.f_obj = self.sum_peso/self.promedio;
+        self.f_obj = self.sum_peso/(self.promedio*((len as f64) - 1.0));
     }
 
 
