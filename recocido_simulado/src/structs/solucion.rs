@@ -2,7 +2,7 @@ use structs::ciudad::Ciudad;
 use std::f64;
 use std::vec::Vec;
 
-static NO_EXISTENTE: f64 = 10.0;//MAGIC NUMBER.
+static NO_EXISTENTE: f64 = 400.0;//MAGIC NUMBER.
 
 #[derive(Clone)]
 pub struct Solucion<'a>{
@@ -208,8 +208,8 @@ impl<'a> Solucion<'a> {
         }
         self.max_dis_castigo = NO_EXISTENTE*max;
         self.promedio = prom/(aristas);
-        println!("{}", self.promedio);
-        println!("{}", aristas);
+        //println!("{}", self.promedio);
+        //println!("{}", aristas);
     }
 
     ///Priemera vez, segunda funcion a llamar.
