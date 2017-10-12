@@ -30,8 +30,9 @@ impl<'a> RecocidoSimulado<'a> {
 
     pub fn new(mut s_init: Vec<&'a Ciudad>,seed: [u32;4]) -> Self {
         let mut rng: XorShiftRng = SeedableRng::from_seed(seed);
+        let ord = s_init.clone();
         rng.shuffle(&mut s_init);
-        let s = Solucion::new(s_init);
+        let s = Solucion::new(s_init,ord);
         let mut rs = RecocidoSimulado {
             temp: 13.0,
             solucion_act: s.clone(),

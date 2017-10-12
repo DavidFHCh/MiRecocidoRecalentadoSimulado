@@ -12,12 +12,13 @@ pub struct Solucion<'a>{
     pub sum_peso: f64,//Este campo es para optimizar la actualizacion.
     pub max_dis_castigo:f64,//Este campo es para optimizar la actualizacion.
     pub factible: bool,
+    pub ordenada : Vec<&'a Ciudad>,
 }
 
 
 impl<'a> Solucion<'a> {
 
-    pub fn new(v: Vec<&'a Ciudad>) -> Self {
+    pub fn new(v: Vec<&'a Ciudad>,v1: Vec<&'a Ciudad>) -> Self {
         let mut sol = Solucion {
                 ciudades_solucion: v,
                 f_obj: 0.0,
@@ -25,6 +26,7 @@ impl<'a> Solucion<'a> {
                 sum_peso: 0.0,
                 max_dis_castigo: 0.0,
                 factible: false,
+                ordenada: v1,
             };
         sol.recien_creado();
         sol
@@ -190,22 +192,21 @@ impl<'a> Solucion<'a> {
         let mut max: f64 = 0.0;
         let mut aristas: f64 = 0.0;
         let mut prom: f64 = 0.0;
-        let mut ciudades_solucion = self.ciudades_solucion.clone();
-        for i in 0..ciudades_solucion.len() {
-            for j in 0..ciudades_solucion.len() {
-                let vecinos_act_dist = ciudades_solucion[i].adyacencias[j].clone();
-                if vecinos_act_dist > max {
-                    max = vecinos_act_dist.clone();
-                }
-                if vecinos_act_dist > 0.0{
-                    prom = prom + vecinos_act_dist;
+        let len = self.ordenada.len();
+        for i in 0..len {
+            for j in (i+1)..len {
+                let vec = &self.ordenada[j];
+                let vecinos_act_dist = &self.ordenada[i].adyacencias[vec.ciudad_id as usize];
+                if *vecinos_act_dist > 0.0 {
+                    prom = prom + *vecinos_act_dist;
                     aristas = aristas + 1.0;
+                    if *vecinos_act_dist > max {
+                        max = *vecinos_act_dist;
+                    }
                 }
             }
         }
         self.max_dis_castigo = NO_EXISTENTE*max;
-        prom = prom/2.0;
-        aristas = aristas/2.0;
         self.promedio = prom/(aristas);
         println!("{}", self.promedio);
         println!("{}", aristas);

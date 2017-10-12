@@ -60,7 +60,7 @@ fn main() {
     let exec_start = PreciseTime::now();
     for semilla in semillas {
         totales = totales + 1;
-        let now = PreciseTime::now();
+        //let now = PreciseTime::now();
         let c_ciudades = conj_ciudades_ref.clone();
         let mut recocido = RecocidoSimulado::new(
             c_ciudades,
