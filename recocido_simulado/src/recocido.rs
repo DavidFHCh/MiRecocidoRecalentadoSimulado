@@ -8,12 +8,12 @@ use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
 
-static TAMLOTE: usize = 2000;
+static TAMLOTE: usize = 750;
 static EPSILON: f64 = 0.000004;
-static EPSILON_P: f64 = 0.0001;
-static EPSILON_T: f64 = 0.0001;
-static PHI: f64 = 0.98;
-static P: f64 = 0.85;
+static EPSILON_P: f64 = 0.001;
+static EPSILON_T: f64 = 0.001;
+static PHI: f64 = 0.99;
+static P: f64 = 0.95;
 static N: usize = 1000;
 
 
@@ -34,7 +34,7 @@ impl<'a> RecocidoSimulado<'a> {
         rng.shuffle(&mut s_init);
         let s = Solucion::new(s_init,ord);
         let mut rs = RecocidoSimulado {
-            temp: 13.0,
+            temp: 3.0,
             solucion_act: s.clone(),
             solucion_min: s.clone(),
             solucion_temp: s.clone(),
@@ -50,6 +50,8 @@ impl<'a> RecocidoSimulado<'a> {
         let mut r: f64 = 0.0;
         let mut a: usize;
         let mut b: usize;
+        //let mut c1: usize;
+        //let mut d: usize;
         let mut intentos: usize = 0;
 
         let len: usize = self.solucion_act.ciudades_solucion.len();
@@ -59,7 +61,10 @@ impl<'a> RecocidoSimulado<'a> {
             let s = self.solucion_act.clone();
             a = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             b = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
+            //c1 = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
+            //d = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             self.solucion_act.vecino(&a,&b);
+            //self.solucion_act.vecino(&c1,&d);
             if self.solucion_act.f_obj <= (s.f_obj + self.temp) {
                 //println!("E:{}",self.solucion_act.f_obj);
                 intentos = 0;
@@ -111,11 +116,11 @@ impl<'a> RecocidoSimulado<'a> {
         let mut p1 = self.porcent_acep(solucion_temp);
         let mut p = p1.0;
         solucion_temp = p1.1;
-        let mut temp_1: f64= 0.0;
-        let mut temp_2: f64= 0.0;
+        let temp_1: f64;
+        let temp_2: f64;
 
         if (P - p).abs() <= EPSILON_P {
-            //NADA
+            return;
         } else if p < P {
             while p < P {
                 self.temp = 2.0 * self.temp;
@@ -144,17 +149,20 @@ impl<'a> RecocidoSimulado<'a> {
 
         let len: usize = self.solucion_act.ciudades_solucion.len();
 
-        for _i in 1..N {
+        for _i in 0..N {
             let a = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             let b = self.rng.gen_range(0,len);//Aqui todo se vuelve no determinista.
             let mut s_prim = s.clone();
             s_prim.vecino(&a, &b);
             if s_prim.f_obj <= (s.f_obj + self.temp) {
                 c = c + 1.0;
+            } else {
+                s_prim.vecino(&b, &a);
             }
             s = s_prim;
         }
         solucion_temp = s;
+        //println!("{}",c/(N as f64) );
         (c/(N as f64),solucion_temp)
     }
 
