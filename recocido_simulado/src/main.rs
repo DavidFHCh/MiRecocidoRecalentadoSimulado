@@ -96,11 +96,11 @@ fn main() {
             println!("-------------------------");
             println!("semilla = {}",semilla);
             println!("funcion de costo : {}", sol_min.f_obj);
-            print!("[");
+            //print!("[");
             for ciudad in sol_min.ciudades_solucion {
-                print!("{}, ",ciudad.ciudad_id);
+                print!("{},",ciudad.ciudad_id);
             }
-            println!("]");
+            //println!("]");
         }
         println!("semilla = {}",semilla);
         println!("funcion de costo : {}", sol_min.f_obj);
