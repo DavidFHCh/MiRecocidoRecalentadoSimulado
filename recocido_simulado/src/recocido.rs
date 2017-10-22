@@ -8,12 +8,12 @@ use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
 
-static TAMLOTE: usize = 750;
+static TAMLOTE: usize = 1000;
 static EPSILON: f64 = 0.000004;
 static EPSILON_P: f64 = 0.001;
 static EPSILON_T: f64 = 0.001;
 static PHI: f64 = 0.99;
-static P: f64 = 0.95;
+static P: f64 = 0.85;
 static N: usize = 1000;
 
 
@@ -45,9 +45,10 @@ impl<'a> RecocidoSimulado<'a> {
         rs
     }
 
-    fn calcula_lote(&mut self) -> f64{
+    fn calcula_lote(&mut self) -> (f64,bool){
         let mut c: usize = 0;
         let mut r: f64 = 0.0;
+        let f;
         let mut a: usize;
         let mut b: usize;
         //let mut c1: usize;
@@ -79,32 +80,42 @@ impl<'a> RecocidoSimulado<'a> {
                 intentos = intentos + 1;
                 self.solucion_act = s;
                 if intentos == 2*TAMLOTE {
-                    return r/(c as f64)
+                    return (r/(c as f64),true)
                 }
             }
         }
-        r = r/(TAMLOTE as f64);
+        f = (r/(TAMLOTE as f64), false);
 
-        r
+        f
     }
 
     pub fn aceptacion_umbrales(&mut self) {
         let mut p: f64 = 0.0;
         let mut q: f64 = f64::INFINITY;
-        //let mut intentos = 0;
+        let mut intentos = 0;
+        let mut ya_no_sigas = false;
+        let mut p1;
+        let mut no_se_lleno;
 
         while self.temp > EPSILON {
             let mut p_prim = q;
             while p <= p_prim {
                 p_prim = p;
-                p = self.calcula_lote();
+                p1 = self.calcula_lote();
+                p = p1.0;
+                no_se_lleno = p1.1;
                 q = p.clone();
-                /*intentos = intentos + 1;
-                if intentos > 100 {
+                intentos = intentos + 1;
+                //println!("{}", intentos);
+                if intentos > (TAMLOTE*10) || no_se_lleno {
                     intentos = 0;
+                    ya_no_sigas = true;
                     break;
-                }*/
+                }
 
+            }
+            if ya_no_sigas {
+                break;
             }
             self.temp = self.temp * PHI;
             //println!("{}", self.temp);
