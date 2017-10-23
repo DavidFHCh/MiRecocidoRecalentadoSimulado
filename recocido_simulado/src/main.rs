@@ -2,7 +2,7 @@ extern crate recocido_simulado;
 extern crate config;
 extern crate time;
 extern crate gnuplot;
-extern crate scoped_threadpool;
+extern crate threadpool;
 
 use gnuplot::{Figure, Caption, Color};
 use recocido_simulado as rs;
@@ -12,7 +12,7 @@ use rs::structs::ciudad::Ciudad;
 use config::{Config, File, FileFormat, Value};
 use time::{PreciseTime};
 use std::f64::INFINITY;
-use scoped_threadpool::Pool;
+use threadpool::ThreadPool;
 use std::sync::{Arc, Mutex};
 
 //use std::env;
@@ -38,10 +38,10 @@ fn to_u32_vec(values: Vec<Value>) -> Vec<u32> {
     v
 }
 
-fn v_usize_to_ciudades(ciudades_id: Vec<usize>,ciudades: &Vec<Ciudad>) -> Vec<&Ciudad>{
+fn v_usize_to_ciudades(ciudades_id: Vec<usize>,ciudades: Arc<Vec<Ciudad>>) -> Vec<Arc<Ciudad>>{
     let mut v = Vec::new();
     for id in ciudades_id {
-        let ciudad = &ciudades[id];
+        let ciudad = Arc::new(ciudades[id].clone());
         v.push(ciudad);
     }
     v
@@ -49,24 +49,24 @@ fn v_usize_to_ciudades(ciudades_id: Vec<usize>,ciudades: &Vec<Ciudad>) -> Vec<&C
 
 
 fn main() {
-    let mut pool = Pool::new(4);
+    let pool = ThreadPool::new(8);
     let mut c = Config::new();
-    let factibles = Arc::new(Mutex::new([0.0,INFINITY,0.0]));
+    let factibles = Arc::new(Mutex::new([0.0,INFINITY,0.0,0.0]));
     let mut totales:usize = 0;
-    let ciudades = get_ciudades().unwrap();
+    let ciudades = Arc::new(get_ciudades().unwrap());
     c.merge(File::new("Ajustes", FileFormat::Toml).required(true)).expect("NO HAY ARCHIVO DE CONFIGURACION 'Ajustes.toml'");
     let semillas: Vec<u32> = to_u32_vec(c.get_array("semillas").expect("No hay lista de semillas declarada en Ajustes.toml"));
     let conj_ciudades = to_usize_vec(c.get_array("ciudad_ids").expect("No hay lista de ids de ciudades declarada en Ajustes.toml"));
     let print = c.get_bool("print").expect("No hay opcion print declarada en Ajustes.toml");
 
-    let conj_ciudades_ref = v_usize_to_ciudades(conj_ciudades,&ciudades);
+    let conj_ciudades_ref = v_usize_to_ciudades(conj_ciudades,ciudades);
+
     let exec_start = PreciseTime::now();
-    for semilla in semillas {
-        totales = totales + 1;
-        pool.scoped(|scoped| {
+        for semilla in semillas {
+            totales += 1;
             let c_ciudades = conj_ciudades_ref.clone();
             let factibles= factibles.clone();
-            scoped.execute(move || {
+            pool.execute(move || {
                 let mut fact1 = factibles.lock().unwrap();
                 let now = PreciseTime::now();
                 //let c_ciudades = conj_ciudades_ref.clone();
@@ -117,8 +117,7 @@ fn main() {
                 println!("Tiempo de ejecucion: {}", now.to(PreciseTime::now()));
                 println!("-------------------------");
             });
-        });
-    }
+        }
     let factibles1 = factibles.lock().unwrap();
     println!("Tiempo de ejucucion total: {}", exec_start.to(PreciseTime::now()));
     println!("numero de soluciones factibles: {}",factibles1[0]);

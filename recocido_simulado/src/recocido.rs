@@ -7,8 +7,9 @@ use self::solucion::Solucion;
 use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
+use std::sync::Arc;
 
-static TAMLOTE: usize = 100;
+static TAMLOTE: usize = 1000;
 static EPSILON: f64 = 0.000004;
 static EPSILON_P: f64 = 0.001;
 static EPSILON_T: f64 = 0.001;
@@ -17,18 +18,18 @@ static P: f64 = 0.85;
 static N: usize = 1000;
 
 
-pub struct RecocidoSimulado<'a> {
+pub struct RecocidoSimulado {
     pub temp: f64,
-    pub solucion_act: Solucion<'a>,
-    pub solucion_min: Solucion<'a>,
-    pub solucion_temp: Solucion<'a>,
+    pub solucion_act: Solucion,
+    pub solucion_min: Solucion,
+    pub solucion_temp: Solucion,
     pub rng: XorShiftRng,
     pub sols: Soluciones,
 }
 
-impl<'a> RecocidoSimulado<'a> {
+impl RecocidoSimulado {
 
-    pub fn new(mut s_init: Vec<&'a Ciudad>,seed: [u32;4]) -> Self {
+    pub fn new(mut s_init: Vec<Arc<Ciudad>>,seed: [u32;4]) -> Self {
         let mut rng: XorShiftRng = SeedableRng::from_seed(seed);
         let ord = s_init.clone();
         rng.shuffle(&mut s_init);
@@ -154,7 +155,7 @@ impl<'a> RecocidoSimulado<'a> {
         self.busqueda_binaria(temp_1, temp_2,solucion_temp);
     }
 
-    fn porcent_acep(&mut self,mut solucion_temp: Solucion<'a>) -> (f64,Solucion<'a>){
+    fn porcent_acep(&mut self,mut solucion_temp: Solucion) -> (f64,Solucion){
         let mut c: f64 = 0.0;
         let mut s = solucion_temp;
 
@@ -177,7 +178,7 @@ impl<'a> RecocidoSimulado<'a> {
         (c/(N as f64),solucion_temp)
     }
 
-    fn busqueda_binaria(&mut self, t1: f64, t2: f64,mut solucion_temp: Solucion<'a>) {
+    fn busqueda_binaria(&mut self, t1: f64, t2: f64,mut solucion_temp: Solucion) {
         let tm = (t1 + t2)/2.0;
         if (t2 - t1) < EPSILON_T {
             self.temp = tm;

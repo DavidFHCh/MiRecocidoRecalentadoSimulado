@@ -1,24 +1,25 @@
 use structs::ciudad::Ciudad;
 use std::f64;
 use std::vec::Vec;
+use std::sync::Arc;
 
 static NO_EXISTENTE: f64 = 3.0;//MAGIC NUMBER.
 
 #[derive(Clone)]
-pub struct Solucion<'a>{
-    pub ciudades_solucion: Vec<&'a Ciudad>,
+pub struct Solucion{
+    pub ciudades_solucion: Vec<Arc<Ciudad>>,
     pub f_obj:f64,
     pub promedio: f64,//Este campo es para optimizar la actualizacion.
     pub sum_peso: f64,//Este campo es para optimizar la actualizacion.
     pub max_dis_castigo:f64,//Este campo es para optimizar la actualizacion.
     pub factible: bool,
-    pub ordenada : Vec<&'a Ciudad>,
+    pub ordenada : Vec<Arc<Ciudad>>,
 }
 
 
-impl<'a> Solucion<'a> {
+impl Solucion{
 
-    pub fn new(v: Vec<&'a Ciudad>,v1: Vec<&'a Ciudad>) -> Self {
+    pub fn new(v: Vec<Arc<Ciudad>>,v1: Vec<Arc<Ciudad>>) -> Self {
         let mut sol = Solucion {
                 ciudades_solucion: v,
                 f_obj: 0.0,
