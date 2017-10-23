@@ -8,11 +8,11 @@ use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
 
-static TAMLOTE: usize = 1000;
+static TAMLOTE: usize = 100;
 static EPSILON: f64 = 0.000004;
 static EPSILON_P: f64 = 0.001;
 static EPSILON_T: f64 = 0.001;
-static PHI: f64 = 0.99;
+static PHI: f64 = 0.9;
 static P: f64 = 0.85;
 static N: usize = 1000;
 

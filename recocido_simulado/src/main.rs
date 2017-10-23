@@ -2,6 +2,7 @@ extern crate recocido_simulado;
 extern crate config;
 extern crate time;
 extern crate gnuplot;
+extern crate scoped_threadpool;
 
 use gnuplot::{Figure, Caption, Color};
 use recocido_simulado as rs;
@@ -11,6 +12,9 @@ use rs::structs::ciudad::Ciudad;
 use config::{Config, File, FileFormat, Value};
 use time::{PreciseTime};
 use std::f64::INFINITY;
+use scoped_threadpool::Pool;
+use std::sync::{Arc, Mutex};
+
 //use std::env;
 //use std::fs::File as FsFile;
 //use std::io::prelude::*;
@@ -45,11 +49,10 @@ fn v_usize_to_ciudades(ciudades_id: Vec<usize>,ciudades: &Vec<Ciudad>) -> Vec<&C
 
 
 fn main() {
+    let mut pool = Pool::new(4);
     let mut c = Config::new();
-    let mut factibles: usize = 0;
+    let factibles = Arc::new(Mutex::new([0.0,INFINITY,0.0]));
     let mut totales:usize = 0;
-    let mut f_min:f64 = INFINITY;
-    let mut sem_min = 0;
     let ciudades = get_ciudades().unwrap();
     c.merge(File::new("Ajustes", FileFormat::Toml).required(true)).expect("NO HAY ARCHIVO DE CONFIGURACION 'Ajustes.toml'");
     let semillas: Vec<u32> = to_u32_vec(c.get_array("semillas").expect("No hay lista de semillas declarada en Ajustes.toml"));
@@ -60,55 +63,65 @@ fn main() {
     let exec_start = PreciseTime::now();
     for semilla in semillas {
         totales = totales + 1;
-        let now = PreciseTime::now();
-        let c_ciudades = conj_ciudades_ref.clone();
-        let mut recocido = RecocidoSimulado::new(
-            c_ciudades,
-            [semilla,semilla*2,semilla*3,semilla*5]
-        );
-        recocido.aceptacion_umbrales();
-        let mut sol_min = recocido.solucion_min;
-        let len = sol_min.ciudades_solucion.len();
-        sol_min.actualizar_factibilidad(&len);
-        if print /*&& sol_min.factible*/ {
-            let mut x = Vec::new();
-            let mut y = Vec::new();
-            let mut i = 0.0;
-            for sol in recocido.sols.soluciones {
-                y.push(sol.f_obj);
-                x.push(i);
-                i = i + 1.0;
-            }
-            let mut fg = Figure::new();
-            let str1 = format!("A line,{},{}",semilla,sol_min.factible).to_owned();
-            let str1_sliced: &str = &str1[..];
-            fg.axes2d().lines(&x, &y, &[Caption(str1_sliced), Color("blue")]);
-            fg.show();
-        }
+        pool.scoped(|scoped| {
+            let c_ciudades = conj_ciudades_ref.clone();
+            let factibles= factibles.clone();
+            scoped.execute(move || {
+                let mut fact1 = factibles.lock().unwrap();
+                let now = PreciseTime::now();
+                //let c_ciudades = conj_ciudades_ref.clone();
+                let mut recocido = RecocidoSimulado::new(
+                    c_ciudades,
+                    [semilla,semilla*2,semilla*3,semilla*5]
+                );
+
+                recocido.aceptacion_umbrales();
+                let mut sol_min = recocido.solucion_min;
+                let len = sol_min.ciudades_solucion.len();
+                sol_min.actualizar_factibilidad(&len);
+                if print /*&& sol_min.factible*/ {
+                    let mut x = Vec::new();
+                    let mut y = Vec::new();
+                    let mut i = 0.0;
+                    for sol in recocido.sols.soluciones {
+                        y.push(sol.f_obj);
+                        x.push(i);
+                        i = i + 1.0;
+                    }
+                    let mut fg = Figure::new();
+                    let str1 = format!("A line,{},{}",semilla,sol_min.factible).to_owned();
+                    let str1_sliced: &str = &str1[..];
+                    fg.axes2d().lines(&x, &y, &[Caption(str1_sliced), Color("blue")]);
+                    fg.show();
+                }
 
 
-        if sol_min.factible {
-            if sol_min.f_obj < f_min {
-                f_min = sol_min.f_obj.clone();
-                sem_min = semilla.clone();
-            }
-            factibles = factibles + 1;
-            println!("-------------------------");
-            println!("semilla = {}",semilla);
-            println!("funcion de costo : {}", sol_min.f_obj);
-            //print!("[");
-            for ciudad in sol_min.ciudades_solucion {
-                print!("{},",ciudad.ciudad_id);
-            }
-            //println!("]");
-        }
-        println!("semilla = {}",semilla);
-        println!("funcion de costo : {}", sol_min.f_obj);
-        println!("Tiempo de ejecucion: {}", now.to(PreciseTime::now()));
-        println!("-------------------------");
+                if sol_min.factible {
+                    if sol_min.f_obj < fact1[1] {
+                        fact1[1] = sol_min.f_obj.clone();
+                        fact1[2] = semilla.clone() as f64;
+                    }
+
+                    fact1[0] += 1.0;
+                    println!("-------------------------");
+                    println!("semilla = {}",semilla);
+                    println!("funcion de costo : {}", sol_min.f_obj);
+                    //print!("[");
+                    for ciudad in sol_min.ciudades_solucion {
+                        print!("{},",ciudad.ciudad_id);
+                    }
+                    //println!("]");
+                }
+                println!("semilla = {}",semilla);
+                println!("funcion de costo : {}", sol_min.f_obj);
+                println!("Tiempo de ejecucion: {}", now.to(PreciseTime::now()));
+                println!("-------------------------");
+            });
+        });
     }
+    let factibles1 = factibles.lock().unwrap();
     println!("Tiempo de ejucucion total: {}", exec_start.to(PreciseTime::now()));
-    println!("numero de soluciones factibles: {}",factibles);
+    println!("numero de soluciones factibles: {}",factibles1[0]);
     println!("numero de semillas totales: {}",totales);
-    println!("Semilla: {}, f_obj_min: {}",sem_min,f_min);
+    println!("Semilla: {}, f_obj_min: {}",factibles1[2],factibles1[1]);
 }
