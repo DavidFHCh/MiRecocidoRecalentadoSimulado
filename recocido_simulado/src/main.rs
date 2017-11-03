@@ -64,7 +64,7 @@ fn main() {
         let c_ciudades = conj_ciudades_ref.clone();
         let mut recocido = RecocidoSimulado::new(
             c_ciudades,
-            [semilla,semilla*2,semilla*3,semilla*5]
+            [semilla,semilla*7,semilla*23,semilla*17]
         );
         recocido.aceptacion_umbrales();
         let mut sol_min = recocido.solucion_min;

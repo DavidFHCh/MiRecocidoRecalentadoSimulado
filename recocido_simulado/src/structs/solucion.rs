@@ -2,7 +2,7 @@ use structs::ciudad::Ciudad;
 use std::f64;
 use std::vec::Vec;
 
-static NO_EXISTENTE: f64 = 3.0;//MAGIC NUMBER.
+static NO_EXISTENTE: f64 = 5.0;//MAGIC NUMBER.
 
 #[derive(Clone)]
 pub struct Solucion<'a>{

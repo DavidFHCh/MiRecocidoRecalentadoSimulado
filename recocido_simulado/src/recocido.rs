@@ -8,12 +8,12 @@ use self::solucion_lite::SolucionLite;
 use self::soluciones::Soluciones;
 use std::f64;
 
-static TAMLOTE: usize = 1000;
+static TAMLOTE: usize = 3000;
 static EPSILON: f64 = 0.000004;
 static EPSILON_P: f64 = 0.001;
 static EPSILON_T: f64 = 0.001;
 static PHI: f64 = 0.99;
-static P: f64 = 0.85;
+static P: f64 = 0.95;
 static N: usize = 1000;
 
 
@@ -34,7 +34,7 @@ impl<'a> RecocidoSimulado<'a> {
         rng.shuffle(&mut s_init);
         let s = Solucion::new(s_init,ord);
         let mut rs = RecocidoSimulado {
-            temp: 3.0,
+            temp: 7.0,
             solucion_act: s.clone(),
             solucion_min: s.clone(),
             solucion_temp: s.clone(),
@@ -43,6 +43,20 @@ impl<'a> RecocidoSimulado<'a> {
         };
         rs.temp_inicial();
         rs
+    }
+
+    fn sweep(&mut self){
+        let len = self.solucion_act.ciudades_solucion.len();
+        for i in 0..len {
+            for j in (i+1)..len {
+                self.solucion_act.vecino(&i,&j);
+                if self.solucion_act.f_obj < self.solucion_min.f_obj {
+                    self.solucion_min = self.solucion_act.clone();//aqui mantenemos la minima.
+                } else {
+                    self.solucion_act.vecino(&j,&i);
+                }
+            }
+        }
     }
 
     fn calcula_lote(&mut self) -> (f64,bool){
@@ -74,6 +88,7 @@ impl<'a> RecocidoSimulado<'a> {
                 self.sols.push(SolucionLite::new(&self.solucion_act));//para el ploteo.
                 if self.solucion_act.f_obj < self.solucion_min.f_obj {
                     self.solucion_min = self.solucion_act.clone();//aqui mantenemos la minima.
+                    self.sweep();
                 }
 
             } else {
@@ -120,6 +135,7 @@ impl<'a> RecocidoSimulado<'a> {
             self.temp = self.temp * PHI;
             //println!("{}", self.temp);
         }
+        self.sweep();
     }
 
     fn temp_inicial(&mut self){
