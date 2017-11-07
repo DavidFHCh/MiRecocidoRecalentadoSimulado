@@ -1,0 +1,145 @@
+\documentclass[12pt]{article}
+\usepackage{fontspec}
+ \usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+ \usepackage{graphicx}
+ \usepackage{enumerate}
+ \usepackage{hyperref}
+ \usepackage{minted}
+
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+%If you want to title your bold things something different just make another thing exactly like this but replace "problem" with the name of the thing you want, like theorem or lemma or whatever
+
+\begin{document}
+
+
+\title{Primer Proyecto de Heurísticas de Optimización Combinatoria}
+\author{Hernández Chiapa David Felipe}
+\maketitle
+\section{Problema del Agente Viajero}
+El problema del agente viajero es un problema NP-Completo, lo cual quiere decir que es un problema que no tiene o no se a encontrado un algoritmo que lo pueda resolver en tiempo polinomial. Este problema consiste en que dado un conjunto de ciudades en un mapa, encontrar el tour de menor peso, es decir, que la suma de las distancias entre las ciudades sea la menor posible.
+
+Para este proyecto se relaja el problema y en lugar de pedir un tour, que desde ahora lo manejaremos como ciclo Hamiltoniano para entrar en contexto de gráficas, en lugar de buscar un ciclo se buscara un camino Hamiltoniano.
+
+La base de datos con la que se resolverá el problema contiene alrededor de mil ciudades, y se usaron dos ejemplares diferentes, uno de cuarenta ciudades y otro de cuatrocientas. Mas adelante se explicara el desempeño del sistema con los dos ejemplares.
+
+\section{El Lenguaje Usado y el Diseño del Sistema}
+
+Se utilizo el lenguaje de programación Rust, el cual es un lenguaje imperativo que introduce conceptos que no se usan normalmente en otros lenguajes, ademas de ser un lenguaje que se preocupa por evitar las condiciones de carrera al momento de implementar un sistema paralelo.
+
+Para el diseño del sistema se intento desmenuzar el problema tanto como se pudiera de tal manera que solo tuviéramos los datos necesarios, se creo un objeto ciudad, un objeto solución y un objeto que le pertenece a la heurística usada, se hablara de ella mas adelante, se utilizan mas objetos que son versiones mas ligeras de los obejetos pasados para mantener una solución mínima e imprimir los datos necesarios y nada mas.
+
+La idea inicial era poder paralelizar el sistema, lo cual se intento pero no se pudo concretar.
+
+\section{El Recocido Simulado}
+
+La heurística que se uso fue el recocido simulado, la cual tiene su origen en la metalurgia, en el temple de metales. La idea de este es que si un metal se calienta a altas temperaturas y se le baja la temperatura abruptamente, el metal queda muy frágil, por otro lado si se baja la temperatura gradualmente, el metal se vuelve cada vez mas resistente. En pocas palabras, si se baja la temperatura lentamente, las propiedades del metal son mejores.
+
+Llevado al problema del Agente Viajero, se utiliza un descenso de colinas que permite que la solución empeore, utilizando una variable que va disminuyendo de tamaño llamada temperatura. Esto logra que se escape de mínimos locales, al explorar una vecindad mayor del espacio de búsqueda.
+
+Sin embargo, esto no garantiza obtener la mejor solución, si no que con base en experimentación se pueden obtener distintas soluciones que se pueden acercar a la solución optima pero no podemos saber si la solución que obtuvimos es la de menor costo.
+
+\section{La Implementación}
+
+La implementación del recocido simulado se puede consultar en la siguiente liga: \url{https://github.com/DavidFHCh/MiRecocidoRecalentadoSimulado.git}
+
+Primero se comenzó por la implementación de la matriz de adyacencias que representa el mapa, donde si la entrada de la matriz es 0, significa que no hay arista entre las dos ciudades(vértices), y si es mayor a 0, significa que si existe, ese mismo valor es el peso de la arista entre esas dos ciudades. La matriz es simétrica y no tiene lazos.
+
+Después se implementaron las soluciones, las cuales son un objeto que contiene la permutación de las ciudades para esa solución, variables que sirven para la optimización de la actualización de la función de costo, la función de costo, y si la solución es factible, es decir, que exista una arista entre dos ciudades contiguas en la permutación. También se tiene un valor que se multiplica al castigo en caso de que la arista no exista. Las solución inicial se realiza en tiempo lineal, ya que tiene que recorrer todo el vector de ciudades para obtener las distancias y todos los datos necesarios, mientras que la actualización se realiza en tiempo constante ya que para obtener el vecino de una solución simplemente se intercambian dos ciudades de lugar en la permutación, y se resta el valor de las aristas que desaparecieron al cambiar de lugar las ciudades y se suman las nuevas a la suma de pesos. A partir de ahí son solamente operaciones aritméticas para calcular la función de costo.
+
+Se implemento el algoritmo del recocido simulado tal cual como se especifica en los escritos enviados por el profesor, con las correcciones que se hicieron al algoritmo para la obtención de la temperatura inicial. La corrección se hizo ya que cuando se aumentaba el tamaño de lote para la temperatura y el ejemplar de ciudades era relativamente pequeño, este no encontraba nuevas permutaciones que se pudieran aceptar.
+
+Al primer intento de la implementación del sistema cometí un error de interpretación de las formulas de para la función de costo, y esta estaba incorrecta, ya que me daba valores que solo cambiaban en la cola de los decimales y el valor de la función evaluada era mayor a 1, generalmente. Se intento corregir por primera vez pero se cometía otro error al jalar los valores del camino para encontrar el mayor peso, ya que en lugar de obtener el peso de entre los identificadores de dos ciudades se utilizaban los contadores de un \'for\' como los identificadores.
+
+Se agrego una función de barrido que, como lo dice su nombre, hace un barrido de las soluciones vecinas para encontrar una mejor solución a la que se tiene actualmente y llegar a un mínimo local. Esto se repite cada vez que se encuentra una solución mejor a  la mínima que ya se tenia con anterioridad. No se disminuye la temperatura mientras se efectúa el barrido. Curiosamente la implemtacion de esta mejora hace que el porcentaje total de solucion factibles crezca de aproximadamente 30\% a mas del 90\%.
+
+Se utiliza un generador de números aleatorios basado en la operación XOR, el cual siempre genera la misma secuencia de números aleatorios si se le alimenta la misma semilla.
+
+
+\section{Experimentación}
+
+El Recocido Simulado funciona con base en valores que se obtienen con la experimentación, como lo son el tamaño del lote, la temperatura mínima(que es un 0 virtual), una $\phi$ que es la constante por la que disminuye la temperatura, y diversos valores que afectan al algoritmo que nos ayuda a obtener la temperatura mínima. Encontrar los mejores valores para obtener la mejor solución posible es donde se ocupa la mayor parte del tiempo con este proyecto, ya que un 20\% se usa para la implementación y el resto para la experimentación.
+
+La experimentación que realice consistió de correr múltiples veces y con parámetros distintos un conjunto de 200 semillas para el generador de números aleatorios.
+
+Por recomendación del profesor se comenzó con los siguientes valores:
+\begin{minted}{Rust}
+static TAMLOTE: usize = 500;
+static EPSILON: f64 = 0.0004;
+static EPSILON_P: f64 = 0.004;
+static EPSILON_T: f64 = 0.004;
+static PHI: f64 = 0.9;
+static P: f64 = 0.85;
+static N: usize = 500;
+\end{minted}
+
+Esta configuración funcionaba bastante bien con la primera base de datos que se nos dio, pero cuando la base de datos fue cambiada, se le quitaron ciudades repetidas, costo mas trabajo encontrar soluciones factibles para los conjuntos de ciudades.
+
+Junto con la base de datos nueva se nos dieron dos conjuntos de ciudades para correr nuestro sistema, uno de 40 ciudades y otro de 400. Primero se trato de mejorar lo mas posible el conjunto de 40 ciudades.
+
+Al tratar de encontrar una buena solucion para el conjunto de 40 ciudades fue que me tope con el problema de que si el tamaño del lote crecia mucho, y por mucho me refiero a mas de 300 soluciones por lote, el sistema se ciclaba, ya que ya no podia llenar el lote al no encontrar mas soluciones mejores a la ultima que se metio. Esto se soluciono poniendo un contador de intentos para poder llenar el lote, y al llegar a la cota propuesta la ejecucion finalizaba, dicha cota se trato entre 2 y 4 veces el tamaño del lote. En este mismo punto se soluciono un problema con el algoritmo que nos da la temperatura minima, en un principio se hacia el swap y la actualizacion de los valores y se checaba si la solucion era aceptada, si no lo era se hacia otro swap sobre esa misma solucion no aceptada, ahora si no se acepta la solucion se regresa a la solucion anterior, la cual si habia sido aceptada con anterioridad.
+
+La primera solucion decente que se obtuvo tuvo una funcion de costo de: 0.621 aproximadamente. Con los siguientes parametros (la semilla de esta solucion la perdi):
+
+\begin{minted}{Rust}
+static TAMLOTE: usize = 100;
+static EPSILON: f64 = 0.00004;
+static EPSILON_P: f64 = 0.001;
+static EPSILON_T: f64 = 0.001;
+static PHI: f64 = 0.95;
+static P: f64 = 0.65;
+static N: usize = 500;
+\end{minted}
+
+Finalmente la mejor solucion que se obtuvo para el ejemplar de 40 ciudades tuvo una función de costo de: 0.6164629446750255, la cual se obtuvo con los siguientes parametros y con la semmila 149:
+
+\begin{minted}{Rust}
+static TAMLOTE: usize = 1000;
+static EPSILON: f64 = 0.000004;
+static EPSILON_P: f64 = 0.001;
+static EPSILON_T: f64 = 0.001;
+static PHI: f64 = 0.99;
+static P: f64 = 0.95;
+static N: usize = 1000;
+\end{minted}
+
+Ambas soluciones se obtienen en menos de un minuto. Esta última solucion se obtuvo haciendo uso del barrido.
+
+Despues se atacó el ejemplar de 400 ciudades, el cual resulto ser más complicado y se sospecha fuertemente que la función de costo no funciona tan bien para este tamaño de ejemplar. Como sea se intento resolver y a pesar de que las soluciones encontradas no son tan buenas, se pudieron mejorar un poco. A continuacion se muestran los valores que se le dieron a las constantes para poder llegar a la primera \"buena\" solucion que se encontro.
+
+La funcion de costo tenia un valor de: 0.18472521324394206, con la semilla 778 y con las constantes en:
+
+\begin{minted}{Rust}
+static TAMLOTE: usize = 1000;
+static EPSILON: f64 = 0.000004;
+static EPSILON_P: f64 = 0.0001;
+static EPSILON_T: f64 = 0.0001;
+static PHI: f64 = 0.98;
+static P: f64 = 0.85;
+static N: usize = 1000;
+\end{minted}
+
+Esta solucion se obtuvo antes de implementar el barrido, la siguiente solucion que es la mejor que se logro obtener en este sistema fue con el uso del barrido, y se puede ver que la mejoria no es tan grande.
+
+La funcion de costo tenia un valor de: 0.1841286413595029, con la semilla 485 y con las constantes en:
+
+\begin{minted}{Rust}
+static TAMLOTE: usize = 2000;
+static EPSILON: f64 = 0.000004;
+static EPSILON_P: f64 = 0.001;
+static EPSILON_T: f64 = 0.001;
+static PHI: f64 = 0.99;
+static P: f64 = 0.95;
+static N: usize = 1000;
+\end{minted}
+
+Esta ultima solucion es curioso porque se tarda aproximadamente el mismo tiempo que la mejor de 40, apesar de ser 10 veces mas grande el conjunto de entrada.
+
+Se intento mejorar esta ultima solucion al subir el tamaño del lote de 2000 a 3000 o incluso a 4000, pero esto resultaba contraporoducente ya que se tardaba aproximandamente 1 a 3 horas en encontrar una solucion y no mejoraba el valor de estas.
+
+\end{document}
